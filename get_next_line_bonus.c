@@ -11,37 +11,40 @@ static char	*ft_init(void)
 	return (str);
 }
 
-static int	appendline(char **s, char **line, int rd)
+char	*appendline(char **s, int rd)
 {
+	char	*line;
 	char	*tmp;
 	int		i;
 
 	if (rd < 0 && ft_strlen(*s) == 0)
-		return (-1);
+		return (NULL);
 	i = 0;
 	while ((*s)[i] != '\n' && (*s)[i] != '\0')
 		i++;
-	*line = ft_substr(*s, 0, i);
+	line = ft_substr(*s, 0, i);
 	if ((*s)[i] == '\n')
 		tmp = ft_strdup(&((*s)[i + 1]));
 	else
 		tmp = NULL;
 	free (*s);
 	*s = tmp;
-	if (rd > 0)
-		return (1);
-	return (0);
+	if (rd > 0 || i > 0)
+		return (line);
+	free(line);
+	return (NULL);
 }
 
-int	get_next_line(const int fd, char **line)
+char	*get_next_line(int fd)
 {
 	static char		*s[FD_SIZE];
 	char			buff[BUFFER_SIZE + 1];
 	char			*temp;
 	int				rd;
 
-	if (fd < 0 || line == NULL || BUFFER_SIZE <= 0)
-		return (-1);
+	rd = 1;
+	if (fd < 0 || fd >= FD_SIZE || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+		return (NULL);
 	if (!s[fd])
 		s[fd] = ft_init();
 	while (ft_strchr(s[fd], '\n') == NULL)
@@ -54,5 +57,5 @@ int	get_next_line(const int fd, char **line)
 		free(s[fd]);
 		s[fd] = temp;
 	}
-	return (appendline(&s[fd], line, rd));
+	return (appendline(&s[fd], rd));
 }

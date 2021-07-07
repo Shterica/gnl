@@ -5,7 +5,7 @@
 int	main(int ac, char **av)
 {
 	int i;
-	int fd[ac - 1];
+	int fd[ac];
 	char *str = NULL;
 	int	out;
 	int	exit;
@@ -17,17 +17,20 @@ int	main(int ac, char **av)
 		if(fd[i] == -1)
 			printf("Cannot open %s\n", av[i]);
 	}
+	fd[0] = -5;
 	while (1)
 	{
 		i = 1;
 		exit = 1;
 		while (i < ac)
 		{
-			out = get_next_line(fd[i], &str);
-			printf("fd = %d: %s\n", fd[i], str);
-			free(str);
-			if (out > 0)
+			str = get_next_line(fd[i]);
+			if (str)
+			{
 				exit = 0;
+				printf("fd = %d: %s\n", fd[i], str);
+			}
+			free(str);
 			i += 1;
 		}
 		if (exit)
