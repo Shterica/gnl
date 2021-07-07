@@ -7,7 +7,6 @@ int	main(int ac, char **av)
 	int i;
 	int fd[ac];
 	char *str = NULL;
-	int	out;
 	int	exit;
 
 	i = 0;
@@ -17,10 +16,10 @@ int	main(int ac, char **av)
 		if(fd[i] == -1)
 			printf("Cannot open %s\n", av[i]);
 	}
-	fd[0] = -5;
+	fd[0] = 290358;
 	while (1)
 	{
-		i = 1;
+		i = 0;
 		exit = 1;
 		while (i < ac)
 		{
