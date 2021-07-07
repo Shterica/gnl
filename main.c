@@ -11,9 +11,12 @@ int	main(int ac, char **av)
 	int	exit;
 
 	i = 0;
-	while (i++ < ac)
+	while (++i < ac)
+	{
 		fd[i] = open(av[i], O_RDONLY);
-	
+		if(fd[i] == -1)
+			printf("Cannot open %s\n", av[i]);
+	}
 	while (1)
 	{
 		i = 1;
@@ -30,5 +33,9 @@ int	main(int ac, char **av)
 		if (exit)
 			break ;
 	}
+	i = 0;
+	while (++i < ac)
+		if(fd[i] != -1)
+			close(fd[i]);
 	return (0);
 }
